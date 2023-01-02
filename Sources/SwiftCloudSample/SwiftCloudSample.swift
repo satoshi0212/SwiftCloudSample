@@ -1,3 +1,4 @@
+import Foundation
 import Compute
 
 @available(iOS 13.0.0, *)
@@ -10,8 +11,17 @@ public struct SwiftCloudSample {
     }
 
     static func handler(req: IncomingRequest, res: OutgoingResponse) async throws {
+        let jsonBody = try await req.body.jsonObject()
+        let name = jsonBody["name"] as? String ?? ""
+        let result = "Hello, \(name)!"
+
+        let resultJson = [
+            "greeting": result,
+        ]
+        let resultData = try JSONEncoder().encode(resultJson)
+
         try await res
             .status(.ok)
-            .send(text)
+            .send(resultData)
     }
 }
