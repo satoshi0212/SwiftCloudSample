@@ -15,13 +15,14 @@ public struct SwiftCloudSample {
         let name = jsonBody["name"] as? String ?? ""
         let result = "Hello, \(name)!"
 
-        let resultJson = [
-            "greeting": result,
-        ]
-        let resultData = try JSONEncoder().encode(resultJson)
+//        let resultJson = [
+//            "greeting": result,
+//        ]
+//        let resultData = try JSONEncoder().encode(resultJson)
 
         try await res
             .status(.ok)
-            .send(resultData)
+            .send(result)
+//            .send(resultData)
     }
 }
