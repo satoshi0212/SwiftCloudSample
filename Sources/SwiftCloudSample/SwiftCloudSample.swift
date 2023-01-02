@@ -11,22 +11,25 @@ public struct SwiftCloudSample {
                 .status(.ok)
                 .send("Hello, World!")
         }
-        .get("/check") { req, res in
-            try await res
-                .status(.ok)
-                .send(req.body)
+        .get("/check/:name") { req, res in
+            let name = req.pathParams["name"] ?? ""
+            try await res.status(.ok).send(name)
         }
-        .get("/greeting") { req, res in
-            let jsonBody = try await req.body.jsonObject()
-            let name = jsonBody["name"] as? String ?? ""
-            let result = "Hello, \(name)!"
-            let resultJson = [
-                "greeting": result
-            ]
-            let resultData = try JSONEncoder().encode(resultJson)
-            try await res
-                .status(.ok)
-                .send(resultData)
+        .get("/greeting/:name") { req, res in
+            let name = req.pathParams["name"] ?? ""
+            let text = "Hello, \(name)!"
+            try await res.status(.ok).send(text)
+
+//            let jsonBody = try await req.body.jsonObject()
+//            let name = jsonBody["name"] as? String ?? ""
+//            let result = "Hello, \(name)!"
+//            let resultJson = [
+//                "greeting": result
+//            ]
+//            let resultData = try JSONEncoder().encode(resultJson)
+//            try await res
+//                .status(.ok)
+//                .send(resultData)
         }
 
     public static func main() async throws {
